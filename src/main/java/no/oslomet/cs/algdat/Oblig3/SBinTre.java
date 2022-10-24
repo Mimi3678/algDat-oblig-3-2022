@@ -107,7 +107,7 @@ public class SBinTre<T> {
         }
         else {
             q.høyre = p; //høyre barn til q
-            p.forelder = q;
+            p.forelder = q; // forrige blir satt til forelder
         }
 
         antall++; //en verdi mer i treet
