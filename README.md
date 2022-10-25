@@ -2,7 +2,7 @@
 
 Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. 
 Oppgaven er levert av følgende student:
-* Miriam Sarponf, s364766, s364766@oslomet.no
+* Miriam Sarpong, s364766, s364766@oslomet.no
 
 
 # Oppgavebeskrivelse

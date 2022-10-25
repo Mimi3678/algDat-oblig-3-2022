@@ -96,7 +96,7 @@ public class SBinTre<T> {
         }
 
         // p er nå null, dvs. ute av treet, q er den siste vi passerte
-        p = new Node<>(verdi, q); //oppretter en ny node
+        p = new Node<>(verdi, q); //oppretter en ny node, her er q forelderen til ny node
 
         if (q == null) {
             rot = p; //p blir rotnode
@@ -124,8 +124,31 @@ public class SBinTre<T> {
 
     public int antall(T verdi) {
 
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Hvis verdi ikke  er i treet (null er ikke i treet), skal metoden returnere 0.
+        if (verdi == null) {
+            return 0;
+        }
+
+        int antallV = 0; //lager en teller verdi
+        int cmp = 0;
+        Node<T> p = rot; //lager en peker mot rotnoden
+
+        if (p != null){
+            cmp = comp.compare(verdi, p.verdi); //sammenligner verdien og p (roten)
+            if (cmp < 0) {
+                p = p.venstre; //legger verdien til venstre
+            } else {
+                if (cmp == 0) {
+                antallV++;
+            }
+                p = p.høyre;
+            }
+        }
+        return antallV;
     }
+
+    //Den skal returnere antall forekomster av verdi i treet
+
 
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
