@@ -14,7 +14,7 @@ I oppgave 2 så brukte gikk jeg først frem ved å lage en if-sjekk, for å sjek
 Deretter ble det laget en teller verdi og en peker mot rotnoden. 
 Ettersom at vi skal returnere antall forekomster av verdi treet, ble verdien og roten sammenlignet
 for å så da sjekke om verdien er mindre (går til venstre) og om det er større (går til høyre). 
-I tillegg sjekker den om det er duplikater. 
+I tillegg sjekker den om det er duplikater. Tok litt inspirasjon fra seksjon 5.2.6, oppgave 2
 
 I oppgave 3 så gikk jeg frem ved
 
