@@ -169,21 +169,19 @@ public class SBinTre<T> {
         int cmp = 0;
         Node<T> p = rot; //lager en peker mot rotnoden
 
-        while (p != null){ //måte bruke while her (vet ikke hvorfor), brukte if først
+        while (p != null){ //måte bruke while her (vet ikke hvorfor), brukte if-først
             cmp = comp.compare(verdi, p.verdi); //sammenligner verdien og p (roten)
             if (cmp < 0) {
                 p = p.venstre; //legger verdien til venstre
             } else {
-                if (cmp == 0) { //hvis den er lik
+                if (cmp == 0) { //hvis den er lik, duplikater
                 antallV++;
             }
                 p = p.høyre; //legger verdien til høyre
             }
         }
         return antallV;
-    }
-
-    //Den skal returnere antall forekomster av verdi i treet
+    } //Den skal returnere antall forekomster av verdi i treet
 
 
     public void nullstill() {
