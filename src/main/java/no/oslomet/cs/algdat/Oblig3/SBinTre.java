@@ -1,10 +1,7 @@
 package no.oslomet.cs.algdat.Oblig3;
 
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class SBinTre<T> {
     private static final class Node<T>   // en indre nodeklasse
@@ -115,78 +112,84 @@ public class SBinTre<T> {
     } //Kompendiet 5.2.3
 
     public boolean fjern(T verdi) {
-        if (verdi == null){ // treet har ingen nullverdier
-            return false;
-        }
+        if (verdi == null) return false;  // treet har ingen nullverdier
 
         Node<T> p = rot, q = null;   // q skal være forelder til p
 
-        while (p != null) { // leter etter verdi
-            int cmp = comp.compare(verdi,p.verdi);   // sammenligner
-            if (cmp < 0) {
-                q = p;
-                p = p.venstre; // går til venstre
-            }
-            else if (cmp > 0) {
-                q = p;
-                p = p.høyre; // går til høyre
-            }
+        while (p != null)            // leter etter verdi
+        {
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+            else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
             else break;    // den søkte verdien ligger i p
         }
-        if (p == null) { // finner ikke verdi
-            return false;
-        }
+        if (p == null) return false;   // finner ikke verdi
 
-
-        if (p.venstre == null || p.høyre == null) { // Tilfelle 1) null barn og 2) ett barn
-
-            if (q.venstre != null) { // gir barnet en ny forelder ettersom at forrige forelder node har blitt fjernet (tilfelle 2)
-                q.venstre.forelder = q.forelder;
-            }
-
+        if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
+        {
             Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
             if (p == rot) {
                 rot = b;
+                if(b != null)
+                    b.forelder = null;
             }
             else if (p == q.venstre) {
                 q.venstre = b;
-            } else q.høyre = b;
-
-           /* if (b != null) { //legger til riktig peker til forelder
-                b.forelder = q; */
-
-        } else { //Tilfelle 3) - tilfelle der det er to barn
-
-            if (q.høyre != null) { // gir barnet en ny forelder ettersom at forrige forelder node har blitt fjernet (tilfelle 3)
-                q.høyre.forelder = q.forelder;
+                if(b != null)
+                    b.forelder = q;
             }
-                Node<T> s = p, r = p.høyre;  // finner neste i inorden
-                while (r.venstre != null) {
-                    s = r;    // s er forelder til r
-                    r = r.venstre;
-                }
+            else {
+                q.høyre = b;
+                if(b != null)
+                    b.forelder = q;
+            }
+        }
+        else  // Tilfelle 3)
+        {
+            Node<T> s = p, r = p.høyre;   // finner neste i inorden
+            while (r.venstre != null)
+            {
+                s = r;    // s er forelder til r
+                r = r.venstre;
+            }
 
-                p.verdi = r.verdi;   // kopierer verdien i r til p
+            p.verdi = r.verdi;   // kopierer verdien i r til p
 
-                if (s != p) {
-                    s.venstre = r.høyre;
-                } else {
-                    s.høyre = r.høyre;
+            if (s != p) {
+                s.venstre = r.høyre;
+                if(r.høyre != null)
                     r.høyre.forelder = s;
-                }
-                r.forelder = s;
             }
+            else {
+                s.høyre = r.høyre;
+                if(r.høyre != null)
+                    r.høyre.forelder = s;
+            }
+        }
 
-        antall--;   // det er nå én node mindre i treet
+        antall--;
+        endringer++;
+        // det er nå én node mindre i treet
         return true;
-    } //hentet fra kompendiet, gjort litt endringer
+
+    }
 
     public int fjernAlle(T verdi) {
-        int verdiA = 0;
+       /* int verdiA = 0;
         if (fjern(verdi)) {
             verdiA++;
         }
         return verdiA;
+        if (tom()){
+            return 0;
+        }*/
+
+        int teller = 0;
+        while (fjern(verdi) != false) {
+            teller++;
+        }
+        return teller;
+
     }
 
     public int antall(T verdi) {
@@ -216,22 +219,43 @@ public class SBinTre<T> {
 
 
     public void nullstill() {
+        if (antall == 0){ //om antall er null, da skal det ikke returneres noe
+            return;
+        }
+        rot = null;
 
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     //Oppgave 3
     private static <T> Node<T> førstePostorden(Node<T> p) {
+        Objects.requireNonNull(p); //her sjekkes det om p ikke er en nullverdi
 
-        if (p == nestePostorden(p)){
-            return null;
+        while (true) {
+            if (p.venstre != null) {
+                p = p.venstre; //p sin venstre barn
+            } else if (p.høyre != null) {
+                p = p.høyre; //p sin høyre barn
+            } else {
+                return p;
+            }
         }
-
     }
 
     //Oppgave 3
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //initializere forelder
+        Node<T> s = p.forelder;
+
+        if (s == null){
+            return null; //Dersom det ikke er noe neste postorden, eller ingen forelder
+        }
+
+        if (s.høyre == p || s.høyre == null) { //om høyre barn får verdien p, skal vi returnere forelder eller at det er tomt
+            return s;
+        } else {
+            return førstePostorden(s.høyre); //kaller førstePostorden metoden
+        }
+
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
