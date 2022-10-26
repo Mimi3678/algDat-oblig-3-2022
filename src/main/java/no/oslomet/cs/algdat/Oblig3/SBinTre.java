@@ -115,8 +115,44 @@ public class SBinTre<T> {
     } //Kompendiet 5.2.3
 
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+        if (verdi == null) return false;  // treet har ingen nullverdier
+
+        Node<T> p = rot, q = null;   // q skal være forelder til p
+
+        while (p != null)            // leter etter verdi
+        {
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+            else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
+            else break;    // den søkte verdien ligger i p
+        }
+        if (p == null) return false;   // finner ikke verdi
+
+        if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
+        {
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+            if (p == rot) rot = b;
+            else if (p == q.venstre) q.venstre = b;
+            else q.høyre = b;
+        }
+        else  // Tilfelle 3)
+        {
+            Node<T> s = p, r = p.høyre;   // finner neste i inorden
+            while (r.venstre != null)
+            {
+                s = r;    // s er forelder til r
+                r = r.venstre;
+            }
+
+            p.verdi = r.verdi;   // kopierer verdien i r til p
+
+            if (s != p) s.venstre = r.høyre;
+            else s.høyre = r.høyre;
+        }
+
+        antall--;   // det er nå én node mindre i treet
+        return true;
+    } //hentet fra kompendiet, gjort litt endringer
 
     public int fjernAlle(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
@@ -133,15 +169,15 @@ public class SBinTre<T> {
         int cmp = 0;
         Node<T> p = rot; //lager en peker mot rotnoden
 
-        if (p != null){
+        while (p != null){ //måte bruke while her (vet ikke hvorfor), brukte if først
             cmp = comp.compare(verdi, p.verdi); //sammenligner verdien og p (roten)
             if (cmp < 0) {
                 p = p.venstre; //legger verdien til venstre
             } else {
-                if (cmp == 0) {
+                if (cmp == 0) { //hvis den er lik
                 antallV++;
             }
-                p = p.høyre;
+                p = p.høyre; //legger verdien til høyre
             }
         }
         return antallV;
