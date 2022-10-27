@@ -159,11 +159,13 @@ public class SBinTre<T> {
             if (s != p) {
                 s.venstre = r.høyre; // r fjernes her ved at s settes lik r.høyre
                 if(r.høyre != null)
-                    r.høyre.forelder = s; //tilfelle3 for venstre barn: etter sletting vil r sin forelder være nå s sin forelder
+                    //tilfelle3 for venstre barn: etter sletting vil r sin forelder være nå s sin forelder
+                    r.høyre.forelder = s;
             }
             else {
                 s.høyre = r.høyre;
-                if(r.høyre != null) //tilfelle3 for høyre barn: etter sletting vil r sin forelder være nå s sin forelder
+                //tilfelle3 for høyre barn: etter sletting vil r sin forelder være nå s sin forelder
+                if(r.høyre != null)
                     r.høyre.forelder = s;
             }
         }
@@ -177,19 +179,20 @@ public class SBinTre<T> {
 
     public int fjernAlle(T verdi) {
 
+        //hjelpevariabel: telle antall verdier
         int verdiA = 0;
-        if (tom()){ //om treet er tomt, returner 0
+
+        //returnere 0 om vi ikke finner noe verdier
+        if (tom()) {
             return 0;
         }
-        else {
-            return verdiA; //skal returnere antall som ble fjernet
+
+        while (fjern(verdi)) {
+            verdiA++;
         }
+        return verdiA;
 
-       /* int verdiAntall = 0;
-        while (fjern(verdi)) verdiAntall++;
-        return verdiAntall;*/
     }
-
     public int antall(T verdi) {
 
         //Hvis verdi ikke  er i treet (null er ikke i treet), skal metoden returnere 0.
@@ -217,32 +220,30 @@ public class SBinTre<T> {
 
 
     public void nullstill() {
+        if (antall == 0){ //om antall er 0, returner ingenting
+            return;
+        }
 
-        //nullstille venstre og høyre barn
-        /*rot.høyre = nullstill();
-        rot.venstre = nullstill();
+        //r blir initialisert som rot
+        Node<T> r = rot;
+        //lage en hjelpevariabel som oppdaterer antall verdier
+        int verdiOpp = antall;
 
-       if (rot == null){
-           return ;
-       }
+        //initialisere ved første verdien i postorden
+        r = førstePostorden(r);
 
-
-        /*Node<T> p = rot;
-        Node<T> q;
-
-        //rot = null;
-
-        if (tom()){
-
-        } else {
-
-        }*/
-
-
-
-        //må vi ha med iterator her?
-
-
+        while (verdiOpp != 0){
+            if (r != null) {
+                fjern(r.verdi); //bruker fjern metoden og nullstiller
+            }
+            if (r != null){
+                r.verdi = null; //oppdatere r sin verdi
+            }
+            if (r != null){
+                r = nestePostorden(r);
+            }
+            verdiOpp--; //oppdatere antall verdier
+        }
     }
 
     //Oppgave 3
@@ -266,10 +267,10 @@ public class SBinTre<T> {
         Node<T> s = p.forelder;
 
         if (s == null){
-            return null; //Dersom det ikke er noe neste postorden, eller ingen forelder
+            return null;
         }
-
-        if (s.høyre == p || s.høyre == null) { //om høyre barn får verdien p, skal vi returnere forelder eller at det er tomt
+//om høyre barn får verdien p, skal vi returnere forelder eller at det er tomt
+        if (s.høyre == p || s.høyre == null) {
             return s;
         } else {
             return førstePostorden(s.høyre); //kaller førstePostorden metoden

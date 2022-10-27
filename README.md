@@ -16,10 +16,19 @@ Ettersom at vi skal returnere antall forekomster av verdi treet, ble verdien og 
 for å så da sjekke om verdien er mindre (går til venstre) og om det er større (går til høyre). 
 I tillegg sjekker den om det er duplikater. Tok litt inspirasjon fra seksjon 5.2.6, oppgave 2
 
-I oppgave 3 så gikk jeg frem ved
+I oppgave 3 så gikk jeg frem ved å lage en sjekk for parameteren p, også for å finne førstepostorden, ble det laget en while-loop for å så da
+returnere p som førstepostorden node. Dette ble gjort for p sin høyre og venstre barn. For nestePostorden ble det sjekket
+om p er den siste i postorden, og hvis det er det skal metoden returnere null.
 
-I oppgave 4 så gikk jeg frem ved
 
-I oppgave 5 så gikk jeg frem ved
+I oppgave 4 så gikk jeg frem ved - ble ikke gjort
 
-I oppgave 6 så gikk jeg frem ved
+I oppgave 5 så gikk jeg frem ved - ble ikke gjort
+
+I oppgave 6 så gikk jeg frem ved å lage metodene fjern, fjernAlle og nullstill. For fjern metoden brukte jeg
+kildekoden i kompendiet, seksjon 5.2.8. Det eneste som ble endret på den er å sette riktig verdi for forelder pekkeren
+etter at alle nodene er fjernet. For metoden fjernAlle ble det laget en hjelpevariabel for å
+holde oversikt over antall verdier, og om vi ikke finner noe verdier ble det returnert 0. 
+for å da fjerne veriden ble metoden public boolean fjern(T verdi) brukt. Hentet også inspirasjon fra kompendiet
+I nullstill metoden var det greit å lage noe hjelpevariabler for å ha orden og oversikt, her ble førstePostorden metoden brukt,
+for å fjerne første verdi i postorden. Sammen med metoden der, ble også metodene fjern og nestePostorden benyttet av seg. 
