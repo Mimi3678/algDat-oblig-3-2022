@@ -130,12 +130,13 @@ public class SBinTre<T> {
             Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
             if (p == rot) {
                 rot = b;
-                if(b != null)
+                if(b != null) // tilfelle1: gjør til at pekeren får rett verdi (forelder får peker null)
                     b.forelder = null;
             }
             else if (p == q.venstre) {
                 q.venstre = b;
-                if(b != null)
+
+                if(b != null) //tilfelle2: etter sletting vil nå b sin forelder være q
                     b.forelder = q;
             }
             else {
@@ -156,40 +157,37 @@ public class SBinTre<T> {
             p.verdi = r.verdi;   // kopierer verdien i r til p
 
             if (s != p) {
-                s.venstre = r.høyre;
+                s.venstre = r.høyre; // r fjernes her ved at s settes lik r.høyre
                 if(r.høyre != null)
-                    r.høyre.forelder = s;
+                    r.høyre.forelder = s; //tilfelle3 for venstre barn: etter sletting vil r sin forelder være nå s sin forelder
             }
             else {
                 s.høyre = r.høyre;
-                if(r.høyre != null)
+                if(r.høyre != null) //tilfelle3 for høyre barn: etter sletting vil r sin forelder være nå s sin forelder
                     r.høyre.forelder = s;
             }
         }
 
         antall--;
-        endringer++;
+        endringer++; //de nye endringene
         // det er nå én node mindre i treet
         return true;
 
     }
 
     public int fjernAlle(T verdi) {
-       /* int verdiA = 0;
-        if (fjern(verdi)) {
-            verdiA++;
-        }
-        return verdiA;
-        if (tom()){
+
+        int verdiA = 0;
+        if (tom()){ //om treet er tomt, returner 0
             return 0;
-        }*/
-
-        int teller = 0;
-        while (fjern(verdi) != false) {
-            teller++;
         }
-        return teller;
+        else {
+            return verdiA; //skal returnere antall som ble fjernet
+        }
 
+       /* int verdiAntall = 0;
+        while (fjern(verdi)) verdiAntall++;
+        return verdiAntall;*/
     }
 
     public int antall(T verdi) {
@@ -219,10 +217,31 @@ public class SBinTre<T> {
 
 
     public void nullstill() {
-        if (antall == 0){ //om antall er null, da skal det ikke returneres noe
-            return;
-        }
-        rot = null;
+
+        //nullstille venstre og høyre barn
+        /*rot.høyre = nullstill();
+        rot.venstre = nullstill();
+
+       if (rot == null){
+           return ;
+       }
+
+
+        /*Node<T> p = rot;
+        Node<T> q;
+
+        //rot = null;
+
+        if (tom()){
+
+        } else {
+
+        }*/
+
+
+
+        //må vi ha med iterator her?
+
 
     }
 
