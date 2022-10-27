@@ -171,8 +171,6 @@ public class SBinTre<T> {
         }
 
         antall--;
-        endringer++; //de nye endringene
-        // det er nå én node mindre i treet
         return true;
 
     }
